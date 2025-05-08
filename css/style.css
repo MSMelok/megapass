@@ -1,31 +1,31 @@
 :root {
-  /* Light Theme Colors - Modern, sophisticated palette */
-  --primary-light: #0066ff;
-  --secondary-light: #4285f4;
-  --accent-light: #ff3d00;
-  --background-light: #f5f7fa;
-  --surface-light: rgba(255, 255, 255, 0.92);
-  --text-primary-light: #1f2937;
-  --text-secondary-light: #64748b;
-  --border-light: rgba(0, 0, 0, 0.08);
+  /* Light Theme Colors - Apple-inspired palette */
+  --primary-light: #0071E3; /* Apple Blue */
+  --secondary-light: #34C759; /* Apple Green */
+  --accent-light: #FF3B30; /* Apple Red */
+  --background-light: #F5F5F7; /* Apple Light Gray */
+  --surface-light: rgba(255, 255, 255, 0.8); /* Frosted Glass Light */
+  --text-primary-light: #1D1D1F; /* Apple Black */
+  --text-secondary-light: #86868B; /* Apple Gray */
+  --border-light: rgba(0, 0, 0, 0.1);
   --shadow-light: rgba(0, 0, 0, 0.05);
-  --primary-light-rgb: 0, 102, 255;
-  --background-light-rgb: 245, 247, 250;
-  --gradient-light: linear-gradient(135deg, #0066ff, #5e9eff);
+  --primary-light-rgb: 0, 113, 227;
+  --background-light-rgb: 245, 245, 247;
+  --gradient-light: linear-gradient(135deg, #0071e373, #00c7be9e); /* Blue to Teal */
   
-  /* Dark Theme Colors - Rich, immersive dark palette */
-  --primary-dark: #60a5fa;
-  --secondary-dark: #3b82f6;
-  --accent-dark: #ff6b6b;
-  --background-dark: #0f172a;
-  --surface-dark: rgba(30, 41, 59, 0.92);
-  --text-primary-dark: #f1f5f9;
-  --text-secondary-dark: #94a3b8;
-  --border-dark: rgba(255, 255, 255, 0.12);
+  /* Dark Theme Colors - Apple Dark Mode palette */
+  --primary-dark: #007cf866; /* Apple Blue Dark */
+  --secondary-dark: #30D158; /* Apple Green Dark */
+  --accent-dark: #FF453A; /* Apple Red Dark */
+  --background-dark: #000000; /* Apple True Black */
+  --surface-dark: rgba(28, 28, 30, 0.8); /* Frosted Glass Dark */
+  --text-primary-dark: #FFFFFF; /* Apple White */
+  --text-secondary-dark: #98989D; /* Apple Gray Dark */
+  --border-dark: rgba(255, 255, 255, 0.1);
   --shadow-dark: rgba(0, 0, 0, 0.3);
-  --primary-dark-rgb: 96, 165, 250;
-  --background-dark-rgb: 15, 23, 42;
-  --gradient-dark: linear-gradient(135deg, #60a5fa, #3b82f6);
+  --primary-dark-rgb: 10, 132, 255;
+  --background-dark-rgb: 0, 0, 0;
+  --gradient-dark: linear-gradient(135deg, #0a84ff54, #30d15852); /* Blue to Green */
 
   /* Default theme (light) */
   --primary: var(--primary-light);
@@ -54,7 +54,7 @@
   --min-body-height: 100vh;
 }
 
-/* Dark Mode Theme */
+/* Dark Mode Theme - Apple Style */
 body.dark-theme {
   --primary: var(--primary-dark);
   --secondary: var(--secondary-dark);
@@ -68,6 +68,7 @@ body.dark-theme {
   --primary-rgb: var(--primary-dark-rgb);
   --background-rgb: var(--background-dark-rgb);
   --gradient: var(--gradient-dark);
+  background: #000000;
 }
 
 /* Reset & Base Styles */
@@ -81,17 +82,44 @@ html {
   height: 100%;
 }
 
-/* Import Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Import SF Pro Display Font (Apple's system font) */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-medium-webfont.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-semibold-webfont.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-bold-webfont.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 
 body {
   min-height: 100%;
   height: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--background);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: linear-gradient(150deg, #f5f5f7 0%, #e5e5ea 100%);
   color: var(--text-primary);
   font-size: 16px;
   line-height: 1.5;
+  letter-spacing: -0.022em; /* Apple-specific letter spacing */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-attachment: fixed;
@@ -131,8 +159,8 @@ header {
   font-size: 3.2rem;
   color: var(--primary);
   margin-bottom: var(--spacing-xs);
-  letter-spacing: -1px;
-  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-weight: 700;
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -140,13 +168,28 @@ header {
   text-fill-color: transparent;
   position: relative;
   z-index: 1;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  transform: translateZ(0);
+}
+
+.logo-container h1::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 4px;
+  background: var(--gradient);
+  bottom: 0;
+  left: 4px;
+  border-radius: 4px;
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
   font-weight: 400;
-  letter-spacing: -0.2px;
+  letter-spacing: 0;
+  margin-top: var(--spacing-xs);
+  opacity: 0.85;
 }
 
 .toggles {
@@ -291,6 +334,7 @@ main {
 }
 
 .tab-btn {
+  font-family: inherit;
   background: transparent;
   border: none;
   width: 130px;
@@ -311,7 +355,7 @@ main {
 .tab-btn.active {
   color: white;
   background-image: var(--gradient);
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+  box-shadow: inset 0px 0px 20px 15px rgb(6 6 6 / 30%);
 }
 
 .tab-btn:not(.active):hover {
@@ -332,23 +376,30 @@ main {
   display: none;
 }
 
-/* Glass Panel Styles */
+/* Glass Panel Styles - Apple Design */
 .glass-panel {
   background: var(--surface);
-  border-radius: 24px;
+  border-radius: 20px;
   padding: var(--spacing-xl);
-  box-shadow: 0 16px 42px 0 var(--shadow);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px 0 var(--shadow);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-panel:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 50px 0 var(--shadow);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px 0 var(--shadow);
+}
+
+/* Dark theme glass panel - Apple Style */
+.dark-theme .glass-panel {
+  background: rgba(28, 28, 30, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 
@@ -386,22 +437,43 @@ main {
 }
 
 #current-password {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: var(--spacing-md);
-  padding: var(--spacing-lg);
-  background-color: rgba(var(--primary-rgb), 0.08);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border);
+  font-size: 2.4rem;
+  font-weight: 500;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: inline-block;
-  min-width: 240px;
-  letter-spacing: 0.5px;
+  min-width: 300px;
+  letter-spacing: -0.01em;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Dark mode password display */
+.dark-theme #current-password {
+  background-color: rgba(44, 44, 46, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Password blur styles - Apple-inspired */
+#current-password.blurred {
+  filter: blur(6px);
+  user-select: none;
+  transition: filter 0.2s ease-out, background-color 0.2s ease-out;
+  position: relative;
+  background-color: rgba(var(--background-rgb), 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(var(--text-primary), 0.5);
 }
 
 #current-password::before {
@@ -447,6 +519,42 @@ main {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   letter-spacing: -0.2px;
   font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+/* Show password button styling */
+#show-password-btn {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(var(--primary-rgb), 0.2);
+  transition: all 0.2s ease;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xs);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+#show-password-btn:hover {
+  background-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.3);
+  filter: brightness(1.05);
+}
+
+#show-password-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(var(--primary-rgb), 0.2);
+  filter: brightness(0.95);
 }
 
 .action-btn:hover:not(:disabled) {
@@ -464,25 +572,33 @@ main {
 
 .primary-btn {
   padding: var(--spacing-md) var(--spacing-xl);
-  background-image: var(--gradient);
+  background-color: var(--primary);
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   margin-bottom: var(--spacing-lg);
   position: relative;
   z-index: 1;
-  box-shadow: 0 8px 16px rgba(var(--primary-rgb), 0.3);
-  letter-spacing: -0.2px;
+  box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.2);
+  letter-spacing: -0.022em;
   transition: all 0.3s ease;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-width: 220px;
 }
 
 .primary-btn:hover {
   box-shadow: 0 12px 20px rgba(var(--primary-rgb), 0.4);
   filter: brightness(1.05);
   transform: translateY(-2px);
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 5px 10px rgba(var(--primary-rgb), 0.2);
+  filter: brightness(0.95);
 }
 
 /* Manual Password Input Styles */
@@ -498,375 +614,195 @@ main {
   display: flex;
   width: 100%;
   max-width: 450px;
+  margin: 0 auto;
   gap: var(--spacing-md);
+  align-items: center;
 }
 
-#manual-password {
+.password-input {
   flex: 1;
+  border: 1px solid var(--border);
+  background-color: rgba(var(--background-rgb), 0.8);
+  color: var(--text-primary);
   padding: var(--spacing-md);
-  border: 1px solid var(--border);
   border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
-  color: var(--text-primary);
-  transition: border 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-body.dark-theme #manual-password {
-  background: rgba(60, 60, 60, 0.7);
-  color: var(--text-primary-dark);
-}
-
-#manual-password:focus {
+.password-input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
-}
-
-.manual-password-container .primary-btn {
-  margin-bottom: 0;
-  white-space: nowrap;
-}
-
-/* Network Settings Styles */
-.network-settings {
-  width: 100%;
-  max-width: 450px;
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background-color: rgba(var(--primary-rgb), 0.03);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border);
-}
-
-.network-settings h3 {
-  margin-bottom: var(--spacing-sm);
-  color: var(--primary);
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.ssid-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.ssid-container label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.ssid-input-container {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-#ssid-input {
-  flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--border);
-  border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  transition: border 0.2s ease;
-}
-
-body.dark-theme #ssid-input {
-  background: rgba(60, 60, 60, 0.7);
-  color: var(--text-primary-dark);
-}
-
-#ssid-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
-}
-
-.btn-icon {
-  font-size: 1.1rem;
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
 }
 
 /* QR Code Styles */
 .qr-container {
+  text-align: center;
   margin-top: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.router-admin-container {
-  margin-top: var(--spacing-xl);
-  display: flex;
-  justify-content: center;
-}
-
-.router-admin-btn {
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  transition: all 0.3s ease;
-  background-image: var(--gradient);
-  color: white;
-  border-radius: 16px;
-  font-weight: 600;
-  box-shadow: 0 6px 14px rgba(var(--primary-rgb), 0.25);
-}
-
-.router-admin-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 18px rgba(var(--primary-rgb), 0.35);
-  filter: brightness(1.05);
+  margin-bottom: var(--spacing-lg);
 }
 
 #qr-code {
+  margin: 0 auto var(--spacing-md);
+  padding: var(--spacing-sm);
   background-color: white;
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-md);
-  min-height: 200px;
-  min-width: 200px;
-  display: flex;
-  align-items: center;
+  border-radius: 12px;
+  display: inline-flex;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-#qr-code img {
-  max-width: 100%;
-  height: auto;
+  align-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 #qr-instructions {
-  color: var(--text-secondary);
   font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-/* History Panel */
-.history-container {
-  max-height: 300px;
-  overflow-y: auto;
-  border-radius: var(--border-radius);
-  background-color: rgba(var(--background-rgb), 0.3);
-  border: 1px solid var(--border);
-  padding: var(--spacing-md);
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) transparent;
+/* Router Admin Button */
+.router-admin-container {
+  margin-top: var(--spacing-lg);
+  text-align: center;
 }
 
-@supports not (backdrop-filter: blur(8px)) {
-  .history-container {
-    background-color: var(--surface);
-  }
+.router-admin-btn {
+  padding: var(--spacing-md) var(--spacing-xl);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  text-decoration: none;
+  color: #1777d7;
+  background-color: rgba(var(--primary-rgb), 0.05);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Custom scrollbar for Webkit browsers */
-.history-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.history-container::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-.history-container::-webkit-scrollbar-thumb {
+.router-admin-btn:hover {
   background-color: var(--primary);
-  border-radius: 10px;
-  border: 2px solid rgba(var(--background-rgb), 0.1);
+  color: white;
+  box-shadow: 0 8px 16px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Password History Styles */
+.history-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: var(--spacing-md);
 }
 
 .history-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: var(--spacing-md);
-  border-bottom: 1px solid var(--border);
-  transition: background-color 0.2s ease;
-}
-
-.history-item:last-child {
-  border-bottom: none;
+  background-color: rgba(var(--background-rgb), 0.4);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
 }
 
 .history-item:hover {
   background-color: rgba(var(--primary-rgb), 0.05);
-}
-
-.history-date {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  border-color: rgba(var(--primary-rgb), 0.2);
 }
 
 .history-password {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--accent);
+}
+
+.history-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
 
 .empty-state {
-  color: var(--text-secondary);
   text-align: center;
+  color: var(--text-secondary);
   padding: var(--spacing-xl);
   font-style: italic;
 }
 
-/* Toast and Dialog */
+/* Toast Notification - Apple-inspired */
 .toast {
   position: fixed;
-  bottom: 20px;
+  top: 50px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--primary);
+  background-color: rgba(0, 0, 0, 0.85);
   color: white;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 12px var(--shadow);
+  padding: 10px 18px;
+  border-radius: 10px;
   z-index: 1000;
-  opacity: 1;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-out;
+  font-weight: 500;
+  max-width: 90%;
   text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 15px;
+  letter-spacing: -0.2px;
 }
 
 .toast.hidden {
+  transform: translate(-50%, -20px);
   opacity: 0;
-  transform: translate(-50%, 20px);
-  pointer-events: none;
+  visibility: hidden;
 }
 
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1100;
+/* Dark theme toast */
+.dark-theme .toast {
+  background-color: rgba(50, 50, 54, 0.95);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
-.dialog-overlay.hidden {
-  display: none;
-}
-
-.dialog {
-  background: var(--surface);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-xl);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.dialog-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-md);
-}
-
-.dialog-message {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-}
-
-.dialog-buttons {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-md);
-}
-
-.dialog-btn {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  min-width: 100px;
-}
-
-.dialog-btn-cancel {
-  background-color: rgba(var(--text-secondary), 0.1);
-  color: var(--text-secondary);
-  border: none;
-}
-
-.dialog-btn-confirm {
-  background-image: var(--gradient);
-  color: white;
-  border: none;
-}
-
-/* Footer */
-footer {
-  margin-top: auto;
-  text-align: center;
-  padding-top: var(--spacing-lg);
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-footer a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-footer a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-}
-
-/* Settings Button & Modal */
+/* Icon button styles */
 .icon-btn {
+  background: transparent;
   border: none;
-  background: none;
   cursor: pointer;
-  color: var(--primary);
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--text-secondary);
+  border-radius: 50%;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: rgba(var(--primary-rgb), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .icon-btn:hover {
-  color: var(--accent);
+  color: var(--primary);
+  background-color: rgba(var(--primary-rgb), 0.05);
 }
 
+/* Settings Modal */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  opacity: 1;
+  transition: all 0.3s ease;
 }
 
 .modal.hidden {
   opacity: 0;
-  pointer-events: none;
+  visibility: hidden;
 }
 
 .modal-content {
@@ -874,31 +810,12 @@ footer a:hover {
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  background: var(--surface);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) transparent;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
 }
 
-/* Custom scrollbar for Webkit browsers */
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background-color: var(--primary);
-  border-radius: 10px;
-  border: 2px solid rgba(var(--background-rgb), 0.1);
+.modal.hidden .modal-content {
+  transform: translateY(-20px);
 }
 
 .modal-header {
@@ -906,83 +823,185 @@ footer a:hover {
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
-  padding-bottom: var(--spacing-sm);
-  border-bottom: 1px solid var(--border);
 }
 
 .modal-header h2 {
   margin-bottom: 0;
 }
 
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
 .settings-section {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .settings-section h3 {
   margin-bottom: var(--spacing-md);
-  color: var(--primary);
-  font-size: 1.1rem;
+  color: var(--text-primary);
   font-weight: 600;
-  position: relative;
-  display: inline-block;
-}
-
-.settings-section h3::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 30px;
-  height: 2px;
-  background-image: var(--gradient);
-  border-radius: 2px;
+  font-size: 1.2rem;
 }
 
 .settings-item {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.settings-item label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.settings-item input[type="text"] {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  background-color: rgba(var(--background-rgb), 0.6);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.settings-item input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
 }
 
 .input-with-button {
   display: flex;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-xs);
 }
 
 .input-with-button input {
   flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--border);
-  border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  transition: border 0.2s ease;
-}
-
-body.dark-theme .input-with-button input {
-  background: rgba(60, 60, 60, 0.7);
-  color: var(--text-primary-dark);
-}
-
-.input-with-button input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
 }
 
 .help-text {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
   margin-top: var(--spacing-xs);
-  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
 }
 
 .setting-toggle {
   margin: var(--spacing-md) 0;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 480px) {
+/* Custom Dialog */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease;
+}
+
+.dialog-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.dialog {
+  background: var(--surface);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+}
+
+.dialog-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  color: var(--primary);
+}
+
+.dialog-message {
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-primary);
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+}
+
+.dialog-btn {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.dialog-btn-cancel {
+  background-color: rgba(var(--text-secondary), 0.1);
+  color: var(--text-secondary);
+}
+
+.dialog-btn-cancel:hover {
+  background-color: rgba(var(--text-secondary), 0.2);
+}
+
+.dialog-btn-confirm {
+  background-color: var(--primary);
+  color: white;
+}
+
+.dialog-btn-confirm:hover {
+  background-color: var(--secondary);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  padding-top: var(--spacing-xl);
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: var(--spacing-xl);
+}
+
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .logo-container h1 {
+    font-size: 2.5rem;
+  }
+  
   header {
     flex-direction: column;
     align-items: flex-start;
@@ -991,20 +1010,99 @@ body.dark-theme .input-with-button input {
   .toggles {
     width: 100%;
     justify-content: space-between;
+    margin-top: var(--spacing-md);
   }
   
   #current-password {
-    font-size: 1.4rem;
-    padding: var(--spacing-sm);
+    font-size: 1.8rem;
+    min-width: unset;
+    width: 100%;
   }
   
   .password-actions {
-    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  
+  .modal-content {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-xl: 24px;
+  }
+  
+  .logo-container h1 {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  
+  #current-password {
+    font-size: 1.5rem;
+    padding: var(--spacing-md);
+  }
+  
+  .primary-btn {
     width: 100%;
   }
   
-  .action-btn {
+  .password-actions {
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
   }
+  
+  .action-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  .tabs {
+    width: 100%;
+  }
+  
+  .tab-btn {
+    width: 50%;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .glass-panel {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Timer indicator styles - Apple-inspired */
+.timer-indicator {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--primary);
+  transform-origin: left;
+  transition: transform 0.1s linear;
+  z-index: 2;
+  border-radius: 4px 4px 0 0;
+}
+
+/* Show password button active state - Apple-inspired */
+.action-btn.active {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* iOS-style button press effect */
+@keyframes ios-button-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+#show-password-btn:not(:active):not(:disabled).active {
+  animation: ios-button-press 0.2s ease;
 }

@@ -18,7 +18,8 @@ const ACTION_TYPES = {
   THEME: 'theme_change',
   DIGIT: 'digit_change',
   SSID: 'ssid_change',
-  RESET: 'reset'
+  RESET: 'reset',
+  SHOW_PASSWORD: 'show_password' // Added new action type
 };
 
 // DOM Elements
@@ -37,6 +38,8 @@ const setSSIDBtn = document.getElementById('set-ssid-btn');
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettingsBtn = document.getElementById('close-settings');
+// Show password button
+const showPasswordBtn = document.getElementById('show-password-btn');
 
 // Tab Elements
 const tabMain = document.getElementById('tab-main');
@@ -56,6 +59,7 @@ let actionHistory = []; // Array to store all actions and changes
 let currentMonth = new Date().getMonth();
 let isUsingFourDigits = false;
 let ssidName = DEFAULT_SSID;
+let passwordTimer = null; // Timer for showing password
 
 // Initialize the application
 function initApp() {
@@ -216,6 +220,9 @@ function setupEventListeners() {
   
   // Set manual password button
   setManualBtn.addEventListener('click', setManualPassword);
+
+  // Show password button
+  showPasswordBtn.addEventListener('click', togglePasswordVisibility);
   
   // Listen for enter key on manual password input
   manualPasswordInput.addEventListener('keyup', (e) => {
@@ -413,7 +420,90 @@ function displayExistingPassword(password) {
 // Display the current password on the UI
 function displayCurrentPassword(password) {
   currentPasswordEl.textContent = password;
+  currentPasswordEl.classList.add('blurred'); // Ensure password is blurred by default
   generateQRCode(password);
+}
+
+// Toggle password visibility
+function togglePasswordVisibility() {
+  // If already visible, hide it
+  if (!currentPasswordEl.classList.contains('blurred')) {
+    hidePassword();
+    return;
+  }
+  
+  // Show the password
+  currentPasswordEl.classList.remove('blurred');
+  showPasswordBtn.classList.add('active');
+  showPasswordBtn.innerHTML = '<i class="fa-regular fa-eye-slash"></i> Hide Password';
+  
+  // Log the action
+  logAction(ACTION_TYPES.SHOW_PASSWORD, {
+    timestamp: new Date().toISOString(),
+    action: 'show'
+  });
+  
+  // Create timer indicator
+  createTimerIndicator();
+  
+  // Start timer to hide password after 10 seconds
+  if (passwordTimer) clearTimeout(passwordTimer);
+  
+  passwordTimer = setTimeout(() => {
+    hidePassword();
+  }, 10000);
+}
+
+// Hide password
+function hidePassword() {
+  currentPasswordEl.classList.add('blurred');
+  showPasswordBtn.classList.remove('active');
+  showPasswordBtn.innerHTML = '<i class="fa-regular fa-eye"></i> Show Password';
+  
+  // Remove timer indicator if exists
+  const timerIndicator = document.querySelector('.timer-indicator');
+  if (timerIndicator) {
+    timerIndicator.remove();
+  }
+  
+  // Clear the timer
+  if (passwordTimer) {
+    clearTimeout(passwordTimer);
+    passwordTimer = null;
+  }
+
+  // Log the action
+  logAction(ACTION_TYPES.SHOW_PASSWORD, {
+    timestamp: new Date().toISOString(),
+    action: 'hide'
+  });
+}
+
+// Create visual timer indicator
+function createTimerIndicator() {
+  // Remove existing indicator if present
+  const existingIndicator = document.querySelector('.timer-indicator');
+  if (existingIndicator) {
+    existingIndicator.remove();
+  }
+  
+  // Create new indicator
+  const indicator = document.createElement('span');
+  indicator.classList.add('timer-indicator');
+  
+  // Add it to the password element
+  currentPasswordEl.appendChild(indicator);
+  
+  // Start animation
+  let width = 100;
+  const interval = setInterval(() => {
+    width -= 1;
+    indicator.style.transform = `scaleX(${width / 100})`;
+    
+    if (width <= 0) {
+      clearInterval(interval);
+    }
+  }, 100);
 }
 
 // Enable copy button
@@ -460,139 +550,151 @@ function updatePasswordHistory() {
   });
 }
 
-// Update the action history display
-function updateHistoryDisplay() {
-  // The history tab shows both passwords and action logs in chronological order
-  if (actionHistory.length === 0) {
-    // If there's no history, we still show the passwords (handled by updatePasswordHistory)
-    return;
-  }
+// Copy current password to clipboard
+function copyPasswordToClipboard() {
+  const passwordText = currentPasswordEl.textContent;
   
-  // Add the action history items to the password history container
-  actionHistory.forEach(action => {
-    const historyItem = document.createElement('div');
-    historyItem.classList.add('history-item', 'action-log');
-    
-    const date = new Date(action.timestamp);
-    const formattedDate = date.toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-    
-    const formattedTime = date.toLocaleTimeString(undefined, {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    
-    // Get icon and color based on action type
-    let icon, actionText;
-    
-    switch(action.type) {
-      case ACTION_TYPES.GENERATE:
-        icon = '<i class="fa-solid fa-key"></i>';
-        actionText = `Generated password: ${action.details.password}`;
-        break;
-      case ACTION_TYPES.MANUAL:
-        icon = '<i class="fa-solid fa-pen-to-square"></i>';
-        actionText = `Manually set password: ${action.details.password}`;
-        break;
-      case ACTION_TYPES.COPY:
-        icon = '<i class="fa-regular fa-clipboard"></i>';
-        actionText = `Copied password: ${action.details.password}`;
-        break;
-      case ACTION_TYPES.THEME:
-        icon = '<i class="fa-solid fa-palette"></i>';
-        actionText = `Changed theme to ${action.details.theme}`;
-        break;
-      case ACTION_TYPES.DIGIT:
-        icon = '<i class="fa-solid fa-hashtag"></i>';
-        actionText = `Changed to ${action.details.format} digits`;
-        break;
-      case ACTION_TYPES.SSID:
-        icon = '<i class="fa-solid fa-wifi"></i>';
-        actionText = `Updated network name to "${action.details.ssid}"`;
-        break;
-      case ACTION_TYPES.RESET:
-        icon = '<i class="fa-solid fa-trash-can"></i>';
-        actionText = action.details.message;
-        break;
-      default:
-        icon = '<i class="fa-solid fa-circle-info"></i>';
-        actionText = 'Action recorded';
-    }
-    
-    historyItem.innerHTML = `
-      <div class="action-icon">${icon}</div>
-      <div class="action-content">
-        <div class="action-text">${actionText}</div>
-        <div class="action-time">${formattedDate} ${formattedTime}</div>
-      </div>
-    `;
-    
-    // Add to the history container
-    passwordHistoryEl.appendChild(historyItem);
-  });
+  if (passwordText && passwordText !== 'Not yet generated') {
+    navigator.clipboard.writeText(passwordText)
+      .then(() => {
+        showToast('Password copied to clipboard!');
+        
+        // Log the copy action
+        logAction(ACTION_TYPES.COPY, {
+          password: passwordText,
+          timestamp: new Date().toISOString()
+        });
+      })
+      .catch(err => {
+        console.error('Could not copy password: ', err);
+        showToast('Failed to copy password', true);
+      });
+  }
 }
 
-// Generate QR code for the Wi-Fi password
-function generateQRCode(password) {
-  // First clear the QR code container
-  qrCodeEl.innerHTML = '';
+// Set a manual password
+function setManualPassword() {
+  const manualPassword = manualPasswordInput.value.trim();
+  const pattern = isUsingFourDigits ? /^Mega\d{4}\*$/ : /^Mega\d{3}\*$/;
   
-  if (!password || password === 'Not yet generated') {
+  if (!pattern.test(manualPassword)) {
+    const errorMessage = isUsingFourDigits 
+      ? 'Password should be in format Mega####*' 
+      : 'Password should be in format Mega###*';
+    
+    showToast(errorMessage, true);
     return;
   }
   
-  // Get the SSID name (with fallback to default)
-  const ssid = loadSSID();
+  // Create a password entry
+  const passwordEntry = {
+    date: new Date().toISOString(),
+    password: manualPassword
+  };
   
-  // Create Wi-Fi connection string
-  const wifiString = `WIFI:T:WPA;S:${ssid};P:${password};;`;
+  // Add to the passwords array
+  passwords.unshift(passwordEntry);
   
-  // Generate QR code using the library
+  // Save to localStorage
+  savePasswords();
+  
+  // Log this action
+  logAction(ACTION_TYPES.MANUAL, {
+    password: manualPassword,
+    timestamp: new Date().toISOString()
+  });
+  
+  // Update UI
+  displayCurrentPassword(manualPassword);
+  updatePasswordHistory();
+  showToast('Manual password set successfully!');
+  
+  // Clear the input field
+  manualPasswordInput.value = '';
+  
+  // Close settings modal
+  closeSettingsModal();
+  
+  // Enable buttons
+  enablePasswordActions();
+}
+
+// Save SSID
+function saveSSID() {
+  const newSSID = ssidInput.value.trim();
+  
+  if (!newSSID) {
+    showToast('Please enter a valid SSID', true);
+    return;
+  }
+  
+  // Save SSID to localStorage
+  localStorage.setItem(STORAGE_KEYS.SSID, newSSID);
+  ssidName = newSSID;
+  
+  // Log the SSID change
+  logAction(ACTION_TYPES.SSID, {
+    ssid: newSSID,
+    timestamp: new Date().toISOString()
+  });
+  
+  // Regenerate QR code with the new SSID
+  const currentPassword = currentPasswordEl.textContent;
+  if (currentPassword && currentPassword !== 'Not yet generated') {
+    generateQRCode(currentPassword);
+  }
+  
+  showToast(`Network name updated to "${newSSID}"`);
+}
+
+// Generate QR Code for Wi-Fi
+function generateQRCode(password) {
+  if (!password || password === 'Not yet generated') {
+    qrCodeEl.innerHTML = '';
+    return;
+  }
+
+  // Get the current SSID
+  ssidName = loadSSID();
+  
+  // Create Wi-Fi config text
+  const wifiConfig = `WIFI:S:${ssidName};T:WPA;P:${password};;`;
+  
+  // Generate QR code
   try {
-    // Create type number dynamically based on content length
-    const typeNumber = 4; // Higher type number for more data
-    const qr = qrcode(typeNumber, 'L'); // L = Low error correction, allows for more data capacity
-    qr.addData(wifiString);
+    qrCodeEl.innerHTML = '';
+    
+    const qr = qrcode(0, 'L');
+    qr.addData(wifiConfig);
     qr.make();
     
-    // Create the QR code image with a larger size for better readability
-    const qrImg = qr.createImgTag(5, 10); // 5 = cell size, 10 = margin
+    const qrImg = qr.createImgTag(5);
     qrCodeEl.innerHTML = qrImg;
-    
-    console.log('QR code generated with data:', wifiString);
   } catch (error) {
-    console.error('Error generating QR code:', error, 'with data:', wifiString);
-    qrCodeEl.innerHTML = '<p style="color: red;">QR Code generation failed</p>';
+    console.error('Error generating QR Code:', error);
+    qrCodeEl.innerHTML = '<p>QR Code generation failed</p>';
   }
 }
 
-// Copy the current password to clipboard
-function copyPasswordToClipboard() {
-  const password = currentPasswordEl.textContent;
-  
-  if (password === 'Not yet generated') {
-    showToast('No password to copy!');
-    return;
+// Show a toast notification
+function showToast(message, isError = false) {
+  // Clear any existing timeout
+  if (window.toastTimeout) {
+    clearTimeout(window.toastTimeout);
   }
   
-  // Use the clipboard API to copy the password
-  navigator.clipboard.writeText(password)
-    .then(() => {
-      // Log the copy action
-      logAction(ACTION_TYPES.COPY, {
-        password: password,
-        timestamp: new Date().toISOString()
-      });
-      
-      showToast('Password copied to clipboard!');
-    })
-    .catch(err => {
-      console.error('Failed to copy password:', err);
-      showToast('Failed to copy password');
-    });
+  toastEl.textContent = message;
+  toastEl.classList.remove('hidden');
+  
+  if (isError) {
+    toastEl.style.backgroundColor = 'rgba(220, 53, 69, 0.9)';
+  } else {
+    toastEl.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  }
+  
+  window.toastTimeout = setTimeout(() => {
+    toastEl.classList.add('hidden');
+  }, 3000);
 }
 
 // Open settings modal
@@ -605,150 +707,11 @@ function closeSettingsModal() {
   settingsModal.classList.add('hidden');
 }
 
-// Show a toast message
-function showToast(message, duration = 3000) {
-  toastEl.textContent = message;
-  toastEl.classList.remove('hidden');
-  
-  // Hide the toast after the specified duration
-  setTimeout(() => {
-    toastEl.classList.add('hidden');
-  }, duration);
+// Update history display
+function updateHistoryDisplay() {
+  // For future implementation if we want to display action history
+  // This is a placeholder for now
 }
 
-// Show a custom confirm dialog instead of browser confirm
-function showConfirmDialog(message, onConfirm, onCancel) {
-  // Set the message
-  confirmMessage.textContent = message;
-  
-  // Set up the callback functions
-  confirmOkBtn.onclick = () => {
-    confirmDialog.classList.add('hidden');
-    if (onConfirm) onConfirm();
-  };
-  
-  confirmCancelBtn.onclick = () => {
-    confirmDialog.classList.add('hidden');
-    if (onCancel) onCancel();
-  };
-  
-  // Show the dialog
-  confirmDialog.classList.remove('hidden');
-}
-
-// Set a manual password
-function setManualPassword() {
-  const manualPassword = manualPasswordInput.value.trim();
-  
-  // Validate the password format (Mega###* or Mega####*)
-  const passwordRegex = /^Mega\d{3,4}\*$/;
-  
-  if (!passwordRegex.test(manualPassword)) {
-    showToast('Invalid password format. Must be Mega followed by 3-4 digits and an asterisk');
-    return;
-  }
-  
-  // Check if we already have a password for today
-  const existingPassword = getPasswordForToday();
-  
-  if (existingPassword) {
-    // Confirm replacement with custom dialog
-    showConfirmDialog('A password for today already exists. Replace it?', 
-      // On confirm
-      () => {
-        // Remove the existing password for today
-        passwords.shift();
-        continueSettingManualPassword(manualPassword);
-      },
-      // On cancel - do nothing
-      null
-    );
-    return;
-  }
-  
-  // Check if this password has been used this month
-  const isPasswordUsed = passwords.some(entry => entry.password === manualPassword);
-  if (isPasswordUsed) {
-    showConfirmDialog('This password has already been used this month. Use it anyway?',
-      // On confirm
-      () => {
-        continueSettingManualPassword(manualPassword);
-      },
-      // On cancel - do nothing
-      null
-    );
-    return;
-  }
-  
-  // If no conflicts, continue with setting the password
-  continueSettingManualPassword(manualPassword);
-}
-
-// Helper function to continue setting manual password after confirmations
-function continueSettingManualPassword(manualPassword) {
-  // Create a password entry with today's date
-  const timestamp = new Date().toISOString();
-  const passwordEntry = {
-    date: timestamp,
-    password: manualPassword,
-    manual: true // Flag to mark it as manually set
-  };
-  
-  // Add to the passwords array
-  passwords.unshift(passwordEntry);
-  
-  // Save to localStorage
-  savePasswords();
-  
-  // Log the manual password setting
-  logAction(ACTION_TYPES.MANUAL, {
-    password: manualPassword,
-    timestamp: timestamp
-  });
-  
-  // Update UI
-  displayCurrentPassword(manualPassword);
-  updatePasswordHistory();
-  showToast('Manual password set successfully!');
-  
-  // Clear the input field
-  manualPasswordInput.value = '';
-  
-  // Enable buttons
-  enablePasswordActions();
-  
-  // Close settings modal
-  closeSettingsModal();
-}
-
-// Save SSID to localStorage and update QR code
-function saveSSID() {
-  const newSSID = ssidInput.value.trim();
-  
-  if (!newSSID) {
-    showToast('Network name cannot be empty');
-    return;
-  }
-  
-  // Save to localStorage
-  localStorage.setItem(STORAGE_KEYS.SSID, newSSID);
-  
-  // Update global variable
-  ssidName = newSSID;
-  
-  // Log the SSID change
-  logAction(ACTION_TYPES.SSID, {
-    ssid: newSSID,
-    timestamp: new Date().toISOString()
-  });
-  
-  // Regenerate QR code if a password exists
-  if (currentPasswordEl.textContent !== 'Not yet generated') {
-    generateQRCode(currentPasswordEl.textContent);
-  }
-  
-  showToast('Network name updated successfully');
-}
-
-// Initialize the app when the DOM content is loaded
+// Initialize the app when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initApp);

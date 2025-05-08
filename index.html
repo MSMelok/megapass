@@ -1,233 +1,179 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="MegaPass - Daily Wi-Fi Password Generator for Net Cafés"
-        />
-        <meta name="author" content="Muhammad Salah - MelokMade" />
-        <title>MegaPass - Daily Wi-Fi Manager</title>
-        <link rel="icon" href="assets/favicon.png" type="image/png" />
-        <link rel="stylesheet" href="css/style.css" />
-        <!-- Inter Font from Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <!-- Font Awesome for Icons -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        />
-        <!-- QR Code library via CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-        <!-- Apple-specific meta tags -->
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black-translucent"
-        />
-        <meta name="apple-mobile-web-app-title" content="MegaPass" />
-    </head>
-    <body class="dark-theme">
-        <div class="app-container">
-            <header>
-                <div class="logo-container">
-                    <h1>MegaPass</h1>
-                    <p class="subtitle">Daily Wi-Fi Password Generator</p>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MegaPass - Daily Wi-Fi Password Generator for Net Cafés" />
+    <meta name="author" content="Muhammad Salah - MelokMade Innovations" />
+    <title>MegaPass - Daily Wi-Fi Manager</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <!-- Inter Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- QR Code library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <!-- Apple-specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MegaPass" />
+</head>
+
+<body class="dark-theme">
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <h1>MegaPass</h1>
+                <p class="subtitle">Daily Wi-Fi Password Generator</p>
+            </div>
+            <div class="toggles">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="theme-switch" class="theme-switch" />
+                    <label for="theme-switch" class="theme-switch-label">
+                        <span class="theme-switch-inner"></span>
+                        <span class="theme-switch-switch"></span>
+                    </label>
+                    <span class="theme-label">Dark Mode</span>
                 </div>
-                <div class="toggles">
-                    <div class="theme-toggle">
-                        <input
-                            type="checkbox"
-                            id="theme-switch"
-                            class="theme-switch"
-                        />
-                        <label for="theme-switch" class="theme-switch-label">
-                            <span class="theme-switch-inner"></span>
-                            <span class="theme-switch-switch"></span>
-                        </label>
-                        <span class="theme-label">Dark Mode</span>
+                <button id="settings-btn" class="icon-btn" aria-label="Settings">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <div class="tabs">
+                <button id="tab-main" class="tab-btn active">Main</button>
+                <button id="tab-history" class="tab-btn">History</button>
+            </div>
+        </div>
+
+        <main>
+            <section class="tab-content glass-panel current-password-panel" id="main-content">
+                <div class="password-display">
+                    <p id="current-password" class="blurred">Not yet generated</p>
+                    <div class="password-actions">
+                        <button id="show-password-btn" class="action-btn">
+                            <i class="fa-regular fa-eye"></i> Show Password
+                        </button>
+                        <button id="copy-btn" class="action-btn" disabled>
+                            <i class="fa-regular fa-clipboard"></i> Copy
+                        </button>
                     </div>
-                    <button
-                        id="settings-btn"
-                        class="icon-btn"
-                        aria-label="Settings"
-                    >
-                        <i class="fa-solid fa-gear"></i>
+                </div>
+                <div class="password-actions-container">
+                    <button id="generate-btn" class="primary-btn">
+                        <i class="fa-solid fa-key"></i> Generate Password
                     </button>
                 </div>
-            </header>
-
-            <div class="tabs-container">
-                <div class="tabs">
-                    <button id="tab-main" class="tab-btn active">Main</button>
-                    <button id="tab-history" class="tab-btn">History</button>
+                <div class="qr-container">
+                    <div id="qr-code"></div>
+                    <p id="qr-instructions">Scan to connect to Wi-Fi</p>
                 </div>
-            </div>
-
-            <main>
-                <section
-                    class="tab-content glass-panel current-password-panel"
-                    id="main-content"
-                >
-                    <div class="password-display">
-                        <p id="current-password">Not yet generated</p>
-                        <div class="password-actions">
-                            <button id="copy-btn" class="action-btn" disabled>
-                                <i class="fa-regular fa-clipboard"></i> Copy
-                            </button>
-                        </div>
-                    </div>
-                    <div class="password-actions-container">
-                        <button id="generate-btn" class="primary-btn">
-                            <i class="fa-solid fa-key"></i> Generate Password
-                        </button>
-                    </div>
-                    <div class="qr-container">
-                        <div id="qr-code"></div>
-                        <p id="qr-instructions">Scan to connect to Wi-Fi</p>
-                    </div>
-                    <div class="router-admin-container">
-                        <a href="https://192.168.1.1/" target="_blank" class="router-admin-btn action-btn">
-                            <i class="fa-solid fa-wifi"></i> Open Router Admin
-                        </a>
-                    </div>
-                </section>
-
-                <section
-                    class="tab-content glass-panel history-panel hidden"
-                    id="history-content"
-                >
-                    <div class="history-container" id="password-history">
-                        <p class="empty-state">
-                            No passwords generated this month
-                        </p>
-                    </div>
-                </section>
-            </main>
-
-            <!-- Settings Modal -->
-            <div id="settings-modal" class="modal hidden">
-                <div class="modal-content glass-panel">
-                    <div class="modal-header">
-                        <h2>Settings</h2>
-                        <button id="close-settings" class="icon-btn">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="settings-section">
-                            <h3>Network Settings</h3>
-                            <div class="settings-item">
-                                <label for="ssid-input"
-                                    >Network Name (SSID):</label
-                                >
-                                <div class="input-with-button">
-                                    <input
-                                        type="text"
-                                        id="ssid-input"
-                                        placeholder="Enter network name"
-                                    />
-                                    <button
-                                        id="set-ssid-btn"
-                                        class="action-btn"
-                                    >
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="settings-section">
-                            <h3>Password Options</h3>
-                            <div class="settings-item">
-                                <div class="digit-toggle setting-toggle">
-                                    <label class="digit-switch-label">
-                                        <input
-                                            type="checkbox"
-                                            id="digit-switch"
-                                            class="digit-switch"
-                                        />
-                                        <span class="digit-switch-inner"></span>
-                                        <span class="digit-switch-text"
-                                            >Use 4 digits instead of 3</span
-                                        >
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="settings-item">
-                                <label for="manual-password"
-                                    >Manual Password:</label
-                                >
-                                <div class="input-with-button">
-                                    <input
-                                        type="text"
-                                        id="manual-password"
-                                        placeholder="Enter custom password"
-                                        pattern="Mega[0-9]{3,4}\*"
-                                        title="Format: Mega followed by 3 or 4 digits and an asterisk"
-                                    />
-                                    <button
-                                        id="set-manual-btn"
-                                        class="action-btn"
-                                    >
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </div>
-                                <p class="help-text">
-                                    Format: Mega followed by 3-4 digits and an
-                                    asterisk
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="router-admin-container">
+                    <a href="https://192.168.1.1/" target="_blank" class="router-admin-btn action-btn">
+                        <i class="fa-solid fa-wifi"></i> Open Router Admin
+                    </a>
                 </div>
-            </div>
+            </section>
 
-            <footer>
-                <p>
-                    Created by Muhammad Salah —
-                    <a
-                        href="https://msmelok.github.io/dev"
-                        target="_blank"
-                        rel="noopener"
-                        >MelokMade Innovations</a
-                    >
-                </p>
-                <p>v1.0.0</p>
-            </footer>
+            <section class="tab-content glass-panel history-panel hidden" id="history-content">
+                <div class="history-container" id="password-history">
+                    <p class="empty-state">
+                        No passwords generated this month
+                    </p>
+                </div>
+            </section>
+        </main>
 
-            <div id="toast" class="toast hidden"></div>
-
-            <!-- Custom dialogs -->
-            <div id="confirm-dialog" class="dialog-overlay hidden">
-                <div class="dialog">
-                    <div class="dialog-title">Confirm Action</div>
-                    <div id="confirm-message" class="dialog-message">
-                        Are you sure you want to continue?
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button id="close-settings" class="icon-btn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Network Settings</h3>
+                        <div class="settings-item">
+                            <label for="ssid-input">Network Name (SSID):</label>
+                            <div class="input-with-button">
+                                <input type="text" id="ssid-input" placeholder="Enter network name" />
+                                <button id="set-ssid-btn" class="action-btn">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="dialog-buttons">
-                        <button
-                            id="confirm-cancel"
-                            class="dialog-btn dialog-btn-cancel"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            id="confirm-ok"
-                            class="dialog-btn dialog-btn-confirm"
-                        >
-                            OK
-                        </button>
+                    <div class="settings-section">
+                        <h3>Password Options</h3>
+                        <div class="settings-item">
+                            <div class="digit-toggle setting-toggle">
+                                <label class="digit-switch-label">
+                                    <input type="checkbox" id="digit-switch" class="digit-switch" />
+                                    <span class="digit-switch-inner"></span>
+                                    <span class="digit-switch-text">Use 4 digits instead of 3</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <label for="manual-password">Manual Password:</label>
+                            <div class="input-with-button">
+                                <input type="text" id="manual-password" placeholder="Enter custom password"
+                                    pattern="Mega[0-9]{3,4}\*"
+                                    title="Format: Mega followed by 3 or 4 digits and an asterisk" />
+                                <button id="set-manual-btn" class="action-btn">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </div>
+                            <p class="help-text">
+                                Format: Mega followed by 3-4 digits and an
+                                asterisk
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <script src="js/script.js"></script>
-    </body>
+        <footer>
+            <p>
+                Created by Muhammad Salah —
+                <a href="https://msmelok.github.io/dev" target="_blank" rel="noopener">MelokMade Innovations</a>
+            </p>
+            <p>v1.0.0</p>
+        </footer>
+
+        <div id="toast" class="toast hidden"></div>
+
+        <!-- Custom dialogs -->
+        <div id="confirm-dialog" class="dialog-overlay hidden">
+            <div class="dialog">
+                <div class="dialog-title">Confirm Action</div>
+                <div id="confirm-message" class="dialog-message">
+                    Are you sure you want to continue?
+                </div>
+                <div class="dialog-buttons">
+                    <button id="confirm-cancel" class="dialog-btn dialog-btn-cancel">
+                        Cancel
+                    </button>
+                    <button id="confirm-ok" class="dialog-btn dialog-btn-confirm">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+
 </html>
